@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DongHyeok Jeong | Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --accent-color: #2563eb;
+      --accent-hover: #1d4ed8;
+      --card-bg: #f8fafc;
+      --tag-bg: #f1f5f9;
+      --sidebar-width: 280px;
+    }
+
+    iframe.carousel-slide {
+      border: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: var(--text-main);
+      background-color: var(--bg-color);
+      line-height: 1.6;
+    }
+
+    /* Top Navigation Header */
+    header {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 100;
+      height: 60px;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+      height: 100%;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--accent-color);
+    }
+
+    /* Main Layout Structure */
+    .layout-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: var(--sidebar-width) 1fr;
+      gap: 3rem;
+    }
+
+    /* Sidebar Profile */
+    .sidebar {
+      position: sticky;
+      top: 80px;
+      height: fit-content;
+    }
+
+    .profile-img-container {
+      width: 180px;
+      margin-bottom: 1.25rem;
+    }
+
+    .profile-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .profile-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .profile-subname {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .profile-bio {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .contact-list {
+      list-style: none;
+      font-size: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .contact-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .contact-list a {
+      color: var(--text-main);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .contact-list a:hover {
+      color: var(--accent-color);
+    }
+
+    /* Copy Button Style */
+    .copy-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 2px 5px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      background-color: var(--tag-bg);
+      color: var(--accent-color);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background-color: rgba(15, 23, 42, 0.9);
+      color: #ffffff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 2000;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Main Content */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 3.5rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    /* Hero / About */
+    .hero h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    /* Skills Section */
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .skill-pill {
+      background-color: var(--tag-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    .skill-category {
+      margin-bottom: 1rem;
+    }
+
+    .skill-category h4 {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Projects Section */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .project-card {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: var(--bg-color);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-card-header {
+      background-color: var(--card-bg);
+      padding: 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .project-header-info {
+      flex: 1;
+    }
+
+    .project-header-btns {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .project-date {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+
+    .project-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.25rem;
+    }
+
+    .project-overview {
+      font-size: 0.95rem;
+      color: var(--accent-color);
+      font-weight: 600;
+    }
+
+    /* Header Action Buttons */
+    .readme-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background-color: #1e293b;
+      color: #ffffff;
+      border: none;
+      padding: 0.45rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    .readme-btn:hover {
+      background-color: #0f172a;
+      transform: translateY(-1px);
+    }
+
+    .video-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background-color: #dc2626;
+      color: #ffffff;
+      border: none;
+      padding: 0.45rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    .video-btn:hover {
+      background-color: #b91c1c;
+      transform: translateY(-1px);
+    }
+
+    /* Image Carousel */
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background-color: #0f172a;
+      overflow: hidden;
+    }
+
+    .carousel-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .carousel-slide:hover {
+      opacity: 0.92;
+    }
+
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 10;
+    }
+
+    .carousel-btn:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .carousel-btn.prev { left: 12px; }
+    .carousel-btn.next { right: 12px; }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background: #ffffff;
+    }
+
+    .project-body {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .project-role {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .project-bullets {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      padding-left: 1.2rem;
+    }
+
+    .project-bullets li {
+      margin-bottom: 0.5rem;
+    }
+
+    .project-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    .tech-pill {
+      font-size: 0.75rem;
+      background-color: var(--tag-bg);
+      color: var(--text-muted);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    /* Education Section */
+    .education-box {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      background-color: var(--bg-color);
+    }
+
+    .school-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .edu-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .edu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px dashed var(--border-color);
+    }
+
+    .edu-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .edu-label {
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .edu-date {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* General Modal Overlay Base */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 1.5rem;
+    }
+
+    /* Fullscreen Image Modal */
+    .modal-content {
+      max-width: 85%;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 6px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      cursor: grab;
+      user-select: none;
+      transform-origin: center center;
+      transition: transform 0.1s ease-out;
+    }
+
+    .modal-content:active {
+      cursor: grabbing;
+    }
+
+    .modal-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      border: none;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      transition: background 0.2s, transform 0.2s;
+      z-index: 1010;
+    }
+
+    .modal-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.1);
+    }
+
+    /* Video Modal Container */
+    .video-modal-content {
+      width: 80%;
+      max-width: 900px;
+      aspect-ratio: 16 / 9;
+      background-color: #000000;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .video-modal-content iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* README Modal Overlay */
+    .readme-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1050;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+    }
+
+    .readme-modal-container {
+      background-color: #ffffff;
+      width: 100%;
+      max-width: 800px;
+      max-height: 85vh;
+      border-radius: 12px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .readme-header {
+      background-color: #1e293b;
+      color: #ffffff;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .readme-close-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-size: 1.25rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .readme-close-btn:hover {
+      color: #ffffff;
+    }
+
+    .readme-body {
+      padding: 2rem;
+      overflow-y: auto;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      line-height: 1.7;
+    }
+
+    .readme-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+
+    .readme-date {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.75rem;
+    }
+
+    .readme-section {
+      margin-bottom: 1.75rem;
+    }
+
+    .readme-section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .readme-section p, .readme-section ul {
+      color: #334155;
+      margin-bottom: 0.5rem;
+    }
+
+    .readme-section ul {
+      padding-left: 1.25rem;
+    }
+
+    .readme-link {
+      color: var(--accent-color);
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .readme-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 2rem 0;
+      margin-top: 4rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 868px) {
+      .layout-container {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        position: static;
+      }
+      .edu-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+      }
+      .project-card-header {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .project-header-btns {
+        align-self: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="logo">DongHyeok Jeong</a>
+      <nav>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="toast">클립보드에 복사되었습니다!</div>
+
+  <!-- Main Layout -->
+  <div class="layout-container">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="profile-img-container">
+        <img src="images/profile/profile.jpg" alt="정동혁 프로필 사진" class="profile-img">
+      </div>
+      <h2 class="profile-name">DongHyeok_Jeong</h2>
+      <p class="profile-subname">정동혁</p>
+      <div class="profile-bio">
+        Department of Electrical Engineering<br>
+        ROS2 Manipulator Control & Physical AI Vision & Embedded System
+      </div>
+
+      <ul class="contact-list">
+        <li><i class="fa-solid fa-location-dot"></i>Incheon, Republic of Korea</li>
+        <li><i class="fa-solid fa-building-columns"></i> Incheon National University</li>
+        <li>
+          <i class="fa-regular fa-envelope"></i> 
+          <a href="mailto:kr28284@naver.com">kr28284@naver.com</a>
+          <button type="button" class="copy-btn" onclick="copyToClipboard('kr28284@naver.com', '이메일 주소가 복사되었습니다.')" title="복사">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </li>
+        <li><i class="fa-brands fa-github"></i> <a href="https://github.com/kr28284-max" target="_blank">GitHub</a></li>
+        <li><i class="fa-brands fa-youtube"></i> <a href="https://www.youtube.com/@mangojoa11" target="_blank">YouTube</a></li>
+      </ul>
+    </aside>
+
+    <!-- Content -->
+    <main class="main-content">
+
+      <!-- About Section -->
+      <section id="about" class="hero">
+        <h1>Robotics Engineer</h1>
+        <p>
+          안녕하세요. ROS2 기반 매니퓰레이터 제어, Physical AI 비전 및 임베디드 시스템을 연구/개발하는 정동혁입니다.
+        </p>
+      </section>
+
+      <!-- Skills Section -->
+      <section id="skills">
+        <h3 class="section-title">Skills & Competencies</h3>
+        
+        <div class="skill-category">
+          <h4> Focus</h4>
+          <div class="skills-grid">
+            <span class="skill-pill">ROS2 기반 매니퓰레이터 제어</span>
+            <span class="skill-pill">피지컬 AI 비전</span>
+            <span class="skill-pill">임베디드 시스템</span>
+          </div>
+        </div>
+
+        <div class="skill-category" style="margin-top: 1.5rem;">
+          <h4>Key Skills</h4>
+          <div class="skills-grid">
+            <span class="skill-pill">Python</span>
+            <span class="skill-pill">ROS 2</span>
+            <span class="skill-pill">Linux</span>
+            <span class="skill-pill">Gazebo</span>
+            <span class="skill-pill">MoveIt2</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects Section -->
+      <section id="projects">
+        <h3 class="section-title">Projects</h3>
+        
+        <div class="projects-grid">
+
+          <!-- Project 3 -->
+          <div class="project-card">
+            <div class="project-card-header">
+              <div class="project-header-info">
+                <div class="project-date">2026.09 ~ 2026.12 (In Progress)</div>
+                <div class="project-title">2026년도 공과대학 창의연구지원사업(EATED)</div>
+                <div class="project-overview">AMR 연동 다관절 로봇팔을 활용한 음성 인식 기반 지능형 적재 자동화 연구</div>
+              </div>
+              <div class="project-header-btns">
+                <button type="button" class="video-btn" onclick="openVideoModal(
+                  'https://youtu.be/rgsJLKFszxo'
+                )">
+                  <i class="fa-brands fa-youtube"></i> 시연 영상
+                </button>
+                <button type="button" class="readme-btn" onclick="openReadmeModal('eated')">
+                  <i class="fa-regular fa-file-code"></i> README.md
+                </button>
+              </div>
+            </div>
+
+            <div class="carousel-container" id="carousel-3">
+              <div class="carousel-track">
+                <img src="images/eated/2026 EATED 포스터.jpg" alt="Eated Image 1" class="carousel-slide" onclick="openModal(this)">
+                <img src="images/eated/인식사진.jpg" alt="Eated Image 2" class="carousel-slide" onclick="openModal(this)">
+                <img src="images/eated/place.jpg" alt="Eated Image 3" class="carousel-slide" onclick="openModal(this)">
+                <img src="images/eated/eated터미널.png" alt="Eated Image 4" class="carousel-slide" onclick="openModal(this)">
+              </div>
+              <button type="button" class="carousel-btn prev" onclick="moveSlide('carousel-3', -1)"><i class="fa-solid fa-chevron-left"></i></button>
+              <button type="button" class="carousel-btn next" onclick="moveSlide('carousel-3', 1)"><i class="fa-solid fa-chevron-right"></i></button>
+              <div class="carousel-dots">
+                <span class="dot active" onclick="setSlide('carousel-3', 0)"></span>
+                <span class="dot" onclick="setSlide('carousel-3', 1)"></span>
+                <span class="dot" onclick="setSlide('carousel-3', 2)"></span>
+                <span class="dot" onclick="setSlide('carousel-3', 3)"></span>
+              </div>
+            </div>
+
+            <div class="project-body">
+              <div class="project-role">역할: 팀장</div>
+              <ul class="project-bullets">
+                <li>AMR 연동 모바일 매니퓰레이터 및 로컬 LLM 기반 음성 연동 지능형 적재 자동화 시스템 개발 총괄</li>
+                <li>VAD, Faster-Whisper STT, Local LLM(Ollama), YOLOv8 비전, ROS 2 제어 통합을 통한 성공률 90%, 응답 지연시간 ~1.18초의 End-to-End 자율 작업 파이프라인 구축</li>
+              </ul>
+              <div class="project-tech">
+                <span class="tech-pill">ROS 2</span>
+                <span class="tech-pill">Jetson Orin Nano</span>
+                <span class="tech-pill">YOLOv8</span>
+                <span class="tech-pill">OpenCV</span>
+                <span class="tech-pill">RPLidar C1</span>
+                <span class="tech-pill">TurtleBot3</span>
+                <span class="tech-pill">OpenMANIPULATOR-X</span>
+                <span class="tech-pill">Intel RealSense D435</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 1 -->
+          <div class="project-card">
+            <div class="project-card-header">
+              <div class="project-header-info">
+                <div class="project-date">2025.07 ~ 2026.07</div>
+                <div class="project-title">RoboCup Incheon @SML</div>
+                <div class="project-overview">2026 Robocup SML리그 | 1st place</div>
+              </div>
+              <div class="project-header-btns">
+                <button type="button" class="video-btn" onclick="openVideoModal([
+                  'https://youtu.be/ZBOwJNkCxPg',
+                  'https://youtu.be/w9EdEP-Iwf0',
+                  'https://youtu.be/LCjYJ-JNjxw'
+                ])">
+                  <i class="fa-brands fa-youtube"></i> 시연 영상
+                </button>
+                <button type="button" class="readme-btn" onclick="openReadmeModal('robocup')">
+                  <i class="fa-regular fa-file-code"></i> README.md
+                </button>
+              </div>
+            </div>
+
+            <div class="carousel-container" id="carousel-1">
+              <div class="carousel-track">
+                <img src="images/robocup/KakaoTalk_20261006_203306844_02.jpg" alt="RoboCup Image 1" class="carousel-slide" onclick="openModal(this)">
+                <img src="images/robocup/KakaoTalk_20261006_203306844.jpg" alt="RoboCup Image 2" class="carousel-slide" onclick="openModal(this)">
+                <img src="images/robocup/KakaoTalk_20261006_203306844_03.jpg" alt="RoboCup Image 3" class="carousel-slide" onclick="openModal(this)">
+                <img src="images/robocup/KakaoTalk_20261006_203306844_04.jpg" alt="RoboCup Image 4" class="carousel-slide" onclick="openModal(this)">
+                <img src="images/robocup/KakaoTalk_20261006_203306844_05.jpg" alt="RoboCup Image 5" class="carousel-slide" onclick="openModal(this)">
+              </div>
+              <button type="button" class="carousel-btn prev" onclick="moveSlide('carousel-1', -1)"><i class="fa-solid fa-chevron-left"></i></button>
+              <button type="button" class="carousel-btn next" onclick="moveSlide('carousel-1', 1)"><i class="fa-solid fa-chevron-right"></i></button>
+              <div class="carousel-dots">
+                <span class="dot active" onclick="setSlide('carousel-1', 0)"></span>
+                <span class="dot" onclick="setSlide('carousel-1', 1)"></span>
+                <span class="dot" onclick="setSlide('carousel-1', 2)"></span>
+                <span class="dot" onclick="setSlide('carousel-1', 3)"></span>
+                <span class="dot" onclick="setSlide('carousel-1', 4)"></span>
+              </div>
+            </div>
+
+            <div class="project-body">
+              <div class="project-role">역할: 매니퓰레이터 및 그리퍼 제어팀</div>
+              <ul class="project-bullets">
+                <li>3D 비전, 역기구학(Kinematics), 엔드이펙터 제어를 포함한 로봇암 매니퓰레이션 전체 개발</li>
+                <li>통합 3D 비전 및 로봇암 제어 알고리즘을 통한 자율 객체 검출, Pick-and-Place, 이동 매니퓰레이션 작업 수행</li>
+              </ul>
+              <div class="project-tech">
+                <span class="tech-pill">ROS 2</span>
+                <span class="tech-pill">Jetson Orin AGX</span>
+                <span class="tech-pill">RB3-730</span>
+                <span class="tech-pill">RH-P12-RN Gripper</span>
+                <span class="tech-pill">Intel RealSense D435i</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project 2 -->
+          <div class="project-card">
+            <div class="project-card-header">
+              <div class="project-header-info">
+                <div class="project-date">2026.03 ~ 2026.06</div>
+                <div class="project-title">캡스톤 디자인</div>
+                <div class="project-overview">손제스쳐 인식기반 지능형 로봇 부품 분류 시스템 | 1위</div>
+              </div>
+              <div class="project-header-btns">
+                <button type="button" class="video-btn" onclick="openVideoModal(
+                  'https://youtu.be/4OlYEZG3RRI'
+                )">
+                  <i class="fa-brands fa-youtube"></i> 시연 영상
+                </button>
+                <button type="button" class="readme-btn" onclick="openReadmeModal('capstone')">
+                  <i class="fa-regular fa-file-code"></i> README.md
+                </button>
+              </div>
+            </div>
+
+            <div class="carousel-container" id="carousel-2">
+              <div class="carousel-track">
+                <img src="images/capstone/2026-1_캡스톤_포스터.png" alt="Capstone Image 1" class="carousel-slide" onclick="openModal(this)">
+                <img src="images/capstone/KakaoTalk_20261006_203130247.jpg" alt="Capstone Image 2" class="carousel-slide" onclick="openModal(this)">
+                <img src="images/capstone/award.jpg" alt="Capstone Image 3" class="carousel-slide" onclick="openModal(this)">
+              </div>
+              <button type="button" class="carousel-btn prev" onclick="moveSlide('carousel-2', -1)"><i class="fa-solid fa-chevron-left"></i></button>
+              <button type="button" class="carousel-btn next" onclick="moveSlide('carousel-2', 1)"><i class="fa-solid fa-chevron-right"></i></button>
+              <div class="carousel-dots">
+                <span class="dot active" onclick="setSlide('carousel-2', 0)"></span>
+                <span class="dot" onclick="setSlide('carousel-2', 1)"></span>
+                <span class="dot" onclick="setSlide('carousel-2', 2)"></span>
+              </div>
+            </div>
+
+            <div class="project-body">
+              <div class="project-role">역할: 팀장</div>
+              <ul class="project-bullets">
+                <li>비전 파이프라인, 제스처 인식, 로봇 제어 통합 등 손 제스처 기반 지능형 로봇 부품 분류 시스템 개발 총괄</li>
+                <li>딥러닝 기반 손 제스처 인식 알고리즘 개발 및 ROS 데이터 파이프라인 통합을 통한 실시간 부품 분류 및 제스처 기반 로봇 제어 구현</li>
+              </ul>
+              <div class="project-tech">
+                <span class="tech-pill">ROS 2</span>
+                <span class="tech-pill">Raspberry Pi</span>
+                <span class="tech-pill">YOLOv8</span>
+                <span class="tech-pill">OpenCV</span>
+                <span class="tech-pill">TurtleBot3</span>
+                <span class="tech-pill">OpenMANIPULATOR-X</span>
+                <span class="tech-pill">Intel RealSense D435i</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Education Section -->
+      <section id="education">
+        <h3 class="section-title">Education</h3>
+        <div class="education-box">
+          <div class="school-title">
+            <i class="fa-solid fa-graduation-cap"></i> Incheon National University
+          </div>
+          <ul class="edu-list">
+            <li class="edu-item">
+              <span class="edu-label"><strong>B.S. in Electrical Engineering</strong></span>
+              <span class="edu-date">2021.03 ~ 2027.02</span>
+            </li>
+            <li class="edu-item">
+              <span class="edu-label"><strong>Minor in Future Vehicle Engineering</strong></span>
+              <span class="edu-date">2026.03 ~ 2027.02</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact">
+        <h3 class="section-title">Contact</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 2;">
+          이메일: <a href="mailto:kr28284@naver.com" style="color: var(--accent-color);">kr28284@naver.com</a>
+          <button type="button" class="copy-btn" onclick="copyToClipboard('kr28284@naver.com', '이메일 주소가 복사되었습니다.')" title="복사">
+            <i class="fa-regular fa-copy"></i>
+          </button><br>
+          깃허브: <a href="https://github.com/kr28284-max" target="_blank" style="color: var(--accent-color);">https://github.com/kr28284-max</a><br>
+          유튜브: <a href="https://www.youtube.com/@mangojoa11" target="_blank" style="color: var(--accent-color);">https://www.youtube.com/@mangojoa11</a><br>
+          전화번호: <span style="color: var(--accent-color);">010-5694-7089</span>
+          <button type="button" class="copy-btn" onclick="copyToClipboard('010-5694-7089', '전화번호가 복사되었습니다.')" title="복사">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </p>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- 이미지 확대 모달 -->
+  <div id="imageModal" class="modal" onclick="closeModal(event)">
+    <button type="button" class="modal-btn modal-prev" onclick="moveModalSlide(-1, event)">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <img id="modalImg" class="modal-content" alt="확대 이미지" onclick="event.stopPropagation()">
+    <button type="button" class="modal-btn modal-next" onclick="moveModalSlide(1, event)">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+  </div>
+
+  <!-- 비디오 팝업 모달 -->
+  <div id="videoModal" class="modal" onclick="closeVideoModal(event)">
+    <button type="button" class="modal-btn modal-prev" onclick="moveVideoSlide(-1, event)">
+      <i class="fa-solid fa-chevron-left"></i>
+    </button>
+    <div class="video-modal-content" onclick="event.stopPropagation()">
+      <iframe id="videoModalFrame" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <button type="button" class="modal-btn modal-next" onclick="moveVideoSlide(1, event)">
+      <i class="fa-solid fa-chevron-right"></i>
+    </button>
+  </div>
+
+  <!-- README 상세 보기 모달 -->
+  <div id="readmeModal" class="readme-modal" onclick="closeReadmeModal(event)">
+    <div class="readme-modal-container" onclick="event.stopPropagation()">
+      <div class="readme-header">
+        <span>README.md</span>
+        <button type="button" class="readme-close-btn" onclick="closeReadmeModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="readme-body" id="readmeBody">
+        <!-- 스크립트로 내용이 동적 삽입됩니다 -->
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 DongHyeok Jeong. All rights reserved.</p>
+  </footer>
+
+  <script>
+    /* 클립보드 복사 및 토스트 알림 */
+    function copyToClipboard(text, message) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(message || '클립보드에 복사되었습니다.');
+      }).catch(err => {
+        console.error('복사 실패:', err);
+      });
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.innerText = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    /* README 데이터 정의 */
+    const readmeData = {
+      eated: {
+        title: "2026년도 공과대학 창의연구지원사업(EATED)",
+        date: "2026.09 ~ 2026.12 (4인 팀 프로젝트)",
+        github: "https://github.com/kr28284-max/Eated_ws-2026",
+        summary: "AMR 연동 다관절 로봇팔을 활용한 음성 인식 기반 지능형 적재 자동화 연구",
+        summaryList: [
+          "VAD 및 Faster-Whisper STT 기반 고속 음성 명령어 인식 파이프라인 구현",
+          "Jetson Orin Nano 기반 로컬 LLM(Ollama) 및 YOLOv8 비전 처리 연동",
+          "음성 명령부터 AMR 이동, 비전 검출 및 로봇팔 적재까지 End-to-End 작업 자율 수행"
+        ],
+        background: "기존의 공정 자동화 로봇 시스템은 고정된 작업 스크립트나 터치패널 입력에 의존하여 유연성이 부족했습니다. 이에 자연어 음성 명령만으로 이동 로봇(AMR)과 로봇팔이 유기적으로 협동하여 자율적으로 물품을 인식하고 적재하는 음성 인터페이스 기반 스마트 팩토리 자동화 솔루션을 연구 개발하게 되었습니다.",
+        meaning: "온디바이스/로컬 환경에서 LLM과 비전 딥러닝 모델을 경량화하여 ROS 2 시스템에 통합한 프로젝트입니다. 네트워크 지연을 최소화한 실시간 실내 이동 매니퓰레이션 기술을 확보하고 작업 성공률 90% 이상을 달성하였습니다.",
+        techStack: "ROS 2, Jetson Orin Nano, YOLOv8, OpenCV, RPLidar C1, TurtleBot3, OpenMANIPULATOR-X, Intel RealSense D435, Ollama, Faster-Whisper",
+        members: "팀장 (정동혁 - 시스템 통합 및 음성/비전 제어 파이프라인 개발)외 팀원 3명"
+      },
+      robocup: {
+        title: "RoboCup Incheon @SML",
+        date: "2025.07 ~ 2026.07 (19인 팀 프로젝트)",
+        github: [
+          { label: "AMR Repo", url: "https://github.com/kr28284-max/2026_Robocup_amr_ws" },
+          { label: "WorkBench Repo", url: "https://github.com/kr28284-max/2026_Robocup_workbench_integrated_ws" }
+        ],
+        summary: "2026 Robocup SML리그 | 1st place (우승)",
+        summaryList: [
+          "3D 비전 기반 객체 위치 추정 및 역기구학(Kinematics) 알고리즘 적용",
+          "산업용 매니퓰레이터(RB3-730) 및 그리퍼(RH-P12-RN) 제어 파이프라인 구축",
+          "실시간 자율 객체 검출 및 Pick-and-Place 작업 연속 수행"
+        ],
+        background: "RoboCup Industrial Smart Manufacturing League(SML)는 가변적인 스마트 공장 환경에서 자율 이동 로봇과 매니퓰레이터를 활용한 모바일 매니퓰레이션 기술을 겨루는 국제 대회입니다. 고정밀 비전과 실시간 로봇암 제어를 결합한 자율 가공/이송 자동화를 목적으로 참가했습니다.",
+        meaning: "산업용 다관절 로봇암 제어 및 3D Depth 센서를 연동하여 가변적인 위치의 무작위 물체를 높은 정밀도로 파악하고 파지하는 역량을 검증받아 국내/국제 대회 1위를 수상했습니다.",
+        techStack: "ROS 2, Jetson Orin AGX, RB3-730, RH-P12-RN Gripper, Intel RealSense D435i, MoveIt2",
+        members: "매니퓰레이터 및 그리퍼 제어팀 (정동혁 - 매니퓰레이터 제어 담당)외 팀원 4명, 비전 및 하드웨어팀 6명, 자율주행팀 5명, 각팀 담당 교수님 3명 총 19명"
+      },
+      capstone: {
+        title: "손제스처 인식기반 지능형 로봇 부품 분류 시스템 (캡스톤 디자인)",
+        date: "2026.03 ~ 2026.06 (5인 팀 프로젝트)",
+        github: "https://github.com/kr28284-max/capstone_ws",
+        summary: "손제스쳐 인식기반 지능형 로봇 부품 분류 시스템 | 1위 대상",
+        summaryList: [
+          "딥러닝 기반 손 제스처 인식 파이프라인 개발 및 실시간 ROS 데이터 통신 연동",
+          "비전 카메라를 활용한 부품 자동 분류 및 매니퓰레이터 제어 연동",
+          "사용자 제스처 명령에 반응하는 직관적인 HMI 구축"
+        ],
+        background: "산업 현장에서 작업자가 복잡한 조작 장치 없이 손짓만으로 로봇에게 명령을 내려 위험하거나 반복적인 부품 분류 작업을 안전하게 지시할 수 있도록 제스처 기반 인터페이스 로봇 시스템을 기획하였습니다.",
+        meaning: "MediaPipe 및 YOLOv8 알고리즘을 확장하여 손동작 인식의 정확도와 실시간성을 보장하였으며, 캡스톤 디자인 경진대회 1위를 달성하는 성과를 거두었습니다.",
+        techStack: "ROS 2, Raspberry Pi, YOLOv8, OpenCV, TurtleBot3, OpenMANIPULATOR-X, Intel RealSense D435i",
+        members: "팀장 (정동혁 - 비전 파이프라인, 제스처 인식 및 로봇 제어 통합 총괄)외 팀원 4명"
+      }
+    };
+
+    /* README 모달 제어 */
+    function openReadmeModal(projectId) {
+      const data = readmeData[projectId];
+      if (!data) return;
+
+      let githubHtml = '';
+      if (Array.isArray(data.github)) {
+        githubHtml = data.github.map(item => {
+          if (typeof item === 'object' && item !== null) {
+            return `<p style="margin-bottom: 0.25rem;"><a href="${item.url}" target="_blank" class="readme-link">${item.label ? `<strong>${item.label}:</strong> ` : ''}${item.url}</a></p>`;
+          }
+          return `<p style="margin-bottom: 0.25rem;"><a href="${item}" target="_blank" class="readme-link">${item}</a></p>`;
+        }).join('');
+      } else if (typeof data.github === 'string') {
+        githubHtml = `<p><a href="${data.github}" target="_blank" class="readme-link">${data.github}</a></p>`;
+      }
+
+      const body = document.getElementById('readmeBody');
+      body.innerHTML = `
+        <h2 class="readme-title">${data.title}</h2>
+        <div class="readme-date">${data.date}</div>
+
+        <div class="readme-section">
+          <div class="readme-section-title"><i class="fa-solid fa-link"></i> Deployment / GitHub Link</div>
+          ${githubHtml}
+        </div>
+
+        <div class="readme-section">
+          <div class="readme-section-title"><i class="fa-solid fa-thumbtack"></i> Summary</div>
+          <p><strong>${data.summary}</strong></p>
+          <ul>
+            ${data.summaryList.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+
+        <div class="readme-section">
+          <div class="readme-section-title"><i class="fa-solid fa-lightbulb"></i> Background</div>
+          <p>${data.background}</p>
+        </div>
+
+        <div class="readme-section">
+          <div class="readme-section-title"><i class="fa-solid fa-magnifying-glass"></i> Meaning</div>
+          <p>${data.meaning}</p>
+        </div>
+
+        <div class="readme-section">
+          <div class="readme-section-title"><i class="fa-solid fa-screwdriver-wrench"></i> Technology Stack(s)</div>
+          <p>${data.techStack}</p>
+        </div>
+
+        <div class="readme-section">
+          <div class="readme-section-title"><i class="fa-solid fa-users"></i> Members</div>
+          <p>${data.members}</p>
+        </div>
+      `;
+
+      document.getElementById('readmeModal').style.display = 'flex';
+    }
+
+    function closeReadmeModal(event) {
+      if (!event || event.target.id === 'readmeModal' || event.target.closest('.readme-close-btn')) {
+        document.getElementById('readmeModal').style.display = 'none';
+      }
+    }
+
+    /* 비디오 모달 제어 */
+    let currentVideoList = [];
+    let currentVideoIndex = 0;
+
+    function getEmbedUrl(url) {
+      let videoId = '';
+      if (url.includes('youtu.be/')) {
+        videoId = url.split('youtu.be/')[1].split('?')[0];
+      } else if (url.includes('v=')) {
+        videoId = url.split('v=')[1].split('&')[0];
+      } else {
+        videoId = url;
+      }
+      return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    }
+
+    function openVideoModal(videoArray) {
+      currentVideoList = Array.isArray(videoArray) ? videoArray : [videoArray];
+      currentVideoIndex = 0;
+      updateVideoModal();
+      document.getElementById('videoModal').style.display = 'flex';
+    }
+
+    function updateVideoModal() {
+      const iframe = document.getElementById('videoModalFrame');
+      if (currentVideoList.length > 0) {
+        iframe.src = getEmbedUrl(currentVideoList[currentVideoIndex]);
+      }
+    }
+
+    function moveVideoSlide(direction, event) {
+      if (event) event.stopPropagation();
+      if (currentVideoList.length === 0) return;
+
+      currentVideoIndex += direction;
+
+      if (currentVideoIndex < 0) {
+        currentVideoIndex = currentVideoList.length - 1;
+      } else if (currentVideoIndex >= currentVideoList.length) {
+        currentVideoIndex = 0;
+      }
+
+      updateVideoModal();
+    }
+
+    function closeVideoModal(event) {
+      if (!event || event.target.id === 'videoModal') {
+        document.getElementById('videoModal').style.display = 'none';
+        document.getElementById('videoModalFrame').src = '';
+      }
+    }
+
+    /* 메인 프로젝트 슬라이더 제어 */
+    const carouselStates = {};
+
+    function moveSlide(carouselId, direction) {
+      const container = document.getElementById(carouselId);
+      if (!container) return;
+      
+      const track = container.querySelector('.carousel-track');
+      const slides = container.querySelectorAll('.carousel-slide');
+      const dots = container.querySelectorAll('.dot');
+      
+      if (!(carouselId in carouselStates)) {
+        carouselStates[carouselId] = 0;
+      }
+
+      let currentIndex = carouselStates[carouselId];
+      currentIndex += direction;
+
+      if (currentIndex < 0) {
+        currentIndex = slides.length - 1;
+      } else if (currentIndex >= slides.length) {
+        currentIndex = 0;
+      }
+
+      carouselStates[carouselId] = currentIndex;
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+      });
+    }
+
+    function setSlide(carouselId, index) {
+      const container = document.getElementById(carouselId);
+      if (!container) return;
+      
+      const track = container.querySelector('.carousel-track');
+      const dots = container.querySelectorAll('.dot');
+
+      carouselStates[carouselId] = index;
+      track.style.transform = `translateX(-${index * 100}%)`;
+
+      dots.forEach((d, i) => {
+        d.classList.toggle('active', i === index);
+      });
+    }
+
+    /* 이미지 모달 확대/축소 & 드래그 제어 */
+    let currentModalImages = [];
+    let currentModalIndex = 0;
+
+    let scale = 1;
+    let translateX = 0;
+    let translateY = 0;
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+
+    function resetTransform() {
+      scale = 1;
+      translateX = 0;
+      translateY = 0;
+      applyTransform();
+    }
+
+    function applyTransform() {
+      const modalImg = document.getElementById('modalImg');
+      if (modalImg) {
+        modalImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+      }
+    }
+
+    function openModal(imgElement) {
+      const container = imgElement.closest('.carousel-container');
+      if (container) {
+        currentModalImages = Array.from(container.querySelectorAll('img.carousel-slide'));
+        currentModalIndex = currentModalImages.indexOf(imgElement);
+      } else {
+        currentModalImages = [imgElement];
+        currentModalIndex = 0;
+      }
+
+      resetTransform();
+      updateModalImage();
+      document.getElementById('imageModal').style.display = 'flex';
+    }
+
+    function updateModalImage() {
+      if (currentModalImages.length > 0) {
+        const modalImg = document.getElementById('modalImg');
+        modalImg.src = currentModalImages[currentModalIndex].src;
+        resetTransform();
+      }
+    }
+
+    function moveModalSlide(direction, event) {
+      if (event) event.stopPropagation();
+
+      if (currentModalImages.length === 0) return;
+
+      currentModalIndex += direction;
+
+      if (currentModalIndex < 0) {
+        currentModalIndex = currentModalImages.length - 1;
+      } else if (currentModalIndex >= currentModalImages.length) {
+        currentModalIndex = 0;
+      }
+
+      updateModalImage();
+    }
+
+    function closeModal(event) {
+      if (!event || event.target.id === 'imageModal' || event.target.id === 'modalImg') {
+        document.getElementById('imageModal').style.display = 'none';
+        resetTransform();
+      }
+    }
+
+    // 휠 스크롤 & 드래그 이벤트
+    document.addEventListener('DOMContentLoaded', function() {
+      const modalImg = document.getElementById('modalImg');
+      if (!modalImg) return;
+
+      modalImg.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        const zoomFactor = 0.2;
+
+        if (e.deltaY < 0) {
+          scale = Math.min(scale + zoomFactor, 5);
+        } else {
+          scale = Math.max(scale - zoomFactor, 1);
+          if (scale === 1) {
+            translateX = 0;
+            translateY = 0;
+          }
+        }
+        applyTransform();
+      }, { passive: false });
+
+      modalImg.addEventListener('mousedown', function(e) {
+        if (scale > 1) {
+          isDragging = true;
+          startX = e.clientX - translateX;
+          startY = e.clientY - translateY;
+          modalImg.style.cursor = 'grabbing';
+          e.preventDefault();
+        }
+      });
+
+      window.addEventListener('mousemove', function(e) {
+        if (isDragging && scale > 1) {
+          translateX = e.clientX - startX;
+          translateY = e.clientY - startY;
+          applyTransform();
+        }
+      });
+
+      window.addEventListener('mouseup', function() {
+        isDragging = false;
+        if (modalImg) modalImg.style.cursor = 'grab';
+      });
+    });
+
+    // 키보드 이벤트 조작 (좌/우 방향키, ESC)
+    document.addEventListener('keydown', function(event) {
+      const imageModal = document.getElementById('imageModal');
+      const videoModal = document.getElementById('videoModal');
+      const readmeModal = document.getElementById('readmeModal');
+
+      if (imageModal.style.display === 'flex') {
+        if (event.key === 'ArrowLeft') moveModalSlide(-1);
+        else if (event.key === 'ArrowRight') moveModalSlide(1);
+        else if (event.key === 'Escape') closeModal();
+      } else if (videoModal.style.display === 'flex') {
+        if (event.key === 'ArrowLeft') moveVideoSlide(-1);
+        else if (event.key === 'ArrowRight') moveVideoSlide(1);
+        else if (event.key === 'Escape') closeVideoModal();
+      } else if (readmeModal.style.display === 'flex') {
+        if (event.key === 'Escape') closeReadmeModal();
+      }
+    });
+  </script>
+
+</body>
+</html>
