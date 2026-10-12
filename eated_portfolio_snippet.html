@@ -1,0 +1,83 @@
+<!-- ===================== 1) 프로젝트 카드 (HTML) ===================== -->
+<!-- Project 1 -->
+<div class="project-card">
+  <div class="project-card-header">
+    <div class="project-header-info">
+      <div class="project-date">2026.09 ~ 2026.12 (In Progress)</div>
+      <div class="project-title">2026년도 공과대학 창의연구지원사업(EATED)</div>
+      <div class="project-overview">음성 명령 기반 AMR·매니퓰레이터 적재 자동화 (인터넷 차단 환경의 로컬 LLM·음성 인식)</div>
+    </div>
+    <div class="project-header-btns">
+      <button type="button" class="video-btn" onclick="openVideoModal(
+        'https://youtu.be/rgsJLKFszxo'
+      )">
+        <i class="fa-brands fa-youtube"></i> 시연 영상
+      </button>
+      <button type="button" class="readme-btn" onclick="openReadmeModal('eated')">
+        <i class="fa-regular fa-file-code"></i> README.md
+      </button>
+    </div>
+  </div>
+
+  <div class="carousel-container" id="carousel-3">
+    <div class="carousel-track">
+      <img src="images/eated/2026 EATED 포스터.jpg" alt="Eated Image 1" class="carousel-slide" onclick="openModal(this)">
+      <img src="images/eated/인식사진.jpg" alt="Eated Image 2" class="carousel-slide" onclick="openModal(this)">
+      <img src="images/eated/place.jpg" alt="Eated Image 3" class="carousel-slide" onclick="openModal(this)">
+      <img src="images/eated/eated터미널.png" alt="Eated Image 4" class="carousel-slide" onclick="openModal(this)">
+    </div>
+    <button type="button" class="carousel-btn prev" onclick="moveSlide('carousel-3', -1)"><i class="fa-solid fa-chevron-left"></i></button>
+    <button type="button" class="carousel-btn next" onclick="moveSlide('carousel-3', 1)"><i class="fa-solid fa-chevron-right"></i></button>
+    <div class="carousel-dots">
+      <span class="dot active" onclick="setSlide('carousel-3', 0)"></span>
+      <span class="dot" onclick="setSlide('carousel-3', 1)"></span>
+      <span class="dot" onclick="setSlide('carousel-3', 2)"></span>
+      <span class="dot" onclick="setSlide('carousel-3', 3)"></span>
+    </div>
+  </div>
+
+  <div class="project-body">
+    <div class="project-role">역할: 팀장 (5인)</div>
+    <ul class="project-bullets">
+      <li>ROS 2 tf2 기반 좌표 변환 구조 적용: 카메라 mount를 static transform으로 정의하고 depth·CameraInfo 좌표를 lookup_transform으로 base_link 변환 후 MoveIt 연동 (수작업 offset 시험 방식에서 전환)</li>
+      <li>조이스틱 주행 → 인식 → pick → 화물 자세 → release → HOME까지 10개 상태 전이 제어 노드(상태머신) 설계·노드 통합, 팔 동작 중 주행 차단 및 에러 시 정지 안전 로직 적용</li>
+      <li>YOLO를 요청 시에만 추론하는 액션 서버 구조로 변경해 프레임 저하 대응, 인터넷 차단 Wi-Fi에서 노트북↔Jetson 토픽 연동 검증</li>
+      <li>로컬 음성(VAD + Faster-Whisper + Qwen3-4B) E2E 명령 생성 성공률 90%(18/20), 평균 처리 시간 약 1.18초 측정</li>
+    </ul>
+    <div class="project-tech">
+      <span class="tech-pill">ROS 2 Humble</span>
+      <span class="tech-pill">tf2</span>
+      <span class="tech-pill">MoveIt</span>
+      <span class="tech-pill">Jetson Orin Nano</span>
+      <span class="tech-pill">YOLO</span>
+      <span class="tech-pill">Faster-Whisper</span>
+      <span class="tech-pill">Ollama</span>
+      <span class="tech-pill">TurtleBot3</span>
+      <span class="tech-pill">OpenMANIPULATOR-X</span>
+      <span class="tech-pill">Intel RealSense D435i</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===================== 2) README 모달 데이터 (JS) ===================== -->
+<script>
+const readmeData = {
+  eated: {
+    title: "2026년도 공과대학 창의연구지원사업(EATED)",
+    date: "2026.09 ~ 2026.12 (5인 팀 프로젝트, 진행 중)",
+    github: "https://github.com/kr28284-max/Eated_ws-2026",
+    summary: "음성 명령 기반 AMR·매니퓰레이터 적재 자동화 시스템 (인터넷 차단 환경에서 로컬 LLM·음성 인식으로 동작)",
+    summaryList: [
+      "VAD + Faster-Whisper STT + Ollama(qwen3:4b-instruct) 로컬 음성 명령 생성 파이프라인 (E2E 성공률 90%, 평균 약 1.18초)",
+      "tf2 기반 좌표 변환 구조(static transform → lookup_transform → base_link)를 MoveIt pick 동작에 연동",
+      "조이스틱 주행과 자동 pick을 결합한 10개 상태 반자동 시퀀스 및 팔 동작 중 주행 차단 안전 규칙 설계",
+      "인터넷 차단 Wi-Fi 환경에서 노트북(음성/LLM)과 Jetson(로봇 제어) 간 ROS 2 토픽 통신 시연 완료 (중간발표)"
+    ],
+    background: "이전 캡스톤 프로젝트의 pick&place에서 물체별·위치별 좌표 offset을 물체당 약 50회씩 수작업으로 시험하며 맞췄고, 기록이 남지 않아 재현과 환경 변경 대응이 어려웠습니다. 이를 구조적으로 해결하고, 인터넷 연결 없이 음성 명령만으로 AMR 탑재 매니퓰레이터가 물품을 적재하는 로컬 기반 시스템을 개발하게 되었습니다.",
+    meaning: "수작업 보정 방식을 tf2 좌표 변환 구조로 대체해 시험 횟수를 크게 줄였고, 음성·비전·제어·주행 노드를 하나의 상태머신 시퀀스로 통합했습니다. 현재는 동작 검증 단계이며, Nav2 자율주행 통합과 pick&place 정량 성공률 측정, 시스템 안정화를 12월까지 진행할 계획입니다.",
+    techStack: "ROS 2 Humble (Ubuntu 22.04), tf2, MoveIt, YOLO, WebRTC VAD, Faster-Whisper, Ollama (qwen3:4b-instruct), TurtleBot3, OpenMANIPULATOR-X, Intel RealSense D435i, Jetson Orin Nano",
+    members: "팀장 정동혁 (역할 분배, 노드 통합, 상태머신 설계, tf2 좌표 변환 적용) 외 팀원 4명 (정규민, 김민성, 임상현, 윤제호) / 지도교수 이동길"
+  }
+};
+</script>
