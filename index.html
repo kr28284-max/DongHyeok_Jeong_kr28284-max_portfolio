@@ -19,6 +19,22 @@
       --sidebar-width: 280px;
     }
 
+    /* 이미지 우측 상단 '클릭하여 확대' 배지 (블러 제거로 렉 방지) */
+    .carousel-container::after {
+      content: "🔍 클릭하여 확대";
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.75);
+      color: #ffffff;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      pointer-events: none;
+      z-index: 5;
+    }
+
     iframe.carousel-slide {
       border: none;
       width: 100%;
@@ -362,7 +378,7 @@
       transform: translateY(-1px);
     }
 
-    /* Image Carousel */
+    /* Image Carousel GPU 가속 추가 */
     .carousel-container {
       position: relative;
       width: 100%;
@@ -376,6 +392,7 @@
       width: 100%;
       height: 100%;
       transition: transform 0.3s ease-in-out;
+      will-change: transform;
     }
 
     .carousel-slide {
@@ -384,6 +401,8 @@
       object-fit: cover;
       cursor: pointer;
       transition: opacity 0.2s;
+      backface-visibility: hidden;
+      transform: translateZ(0);
     }
 
     .carousel-slide:hover {
@@ -792,7 +811,7 @@
       <section id="about" class="hero">
         <h1>Robotics Engineer</h1>
         <p>
-          안녕하세요. 비전 인식과 로봇 제어를 연결해 실제 동작으로 구현하는 정동혁입니다.</br> ROS2 Humble 기반 매니퓰레이터 제어, Physical AI 비전 및 임베디드 시스템을 연구/개발하고 있습니다.
+          안녕하세요. 비전 인식과 로봇 제어를 연결해 실제 동작으로 구현하는 정동혁입니다.<br> ROS2 Humble 기반 매니퓰레이터 제어, Physical AI 비전 및 임베디드 시스템을 연구/개발하고 있습니다.
         </p>
       </section>
 
@@ -1004,22 +1023,6 @@
 
         </div>
       </section>
-      <!-- Affiliation Section -->
-      <section id="Affiliation">
-        <h3 class="section-title">Affiliation</h3>
-        <div class="education-box">
-          <div class="school-title">
-            <i class="fa-solid fa-graduation-cap"></i> Fundamental Control Systems Lab
-          </div>
-          <ul class="edu-list">
-            <li class="edu-item">
-              <span class="edu-label"><strong>Undergraduate Researcher · Prof. Donggil Lee</strong></span>
-              <span class="edu-date">2025.07 ~ 2027.02</span>
-            </li>
-
-          </ul>
-        </div>
-      </section>
 
       <!-- Education Section -->
       <section id="education">
@@ -1036,6 +1039,10 @@
             <li class="edu-item">
               <span class="edu-label"><strong>Minor in Future Vehicle Engineering</strong></span>
               <span class="edu-date">2026.03 ~ 2027.02</span>
+            </li>
+            <li class="edu-item">
+              <span class="edu-label"><strong>Undergraduate Researcher Fundamental Control Systems Lab · Prof. Donggil Lee</strong></span>
+              <span class="edu-date">2025.07 ~ 2027.02</span>
             </li>
           </ul>
         </div>
@@ -1298,7 +1305,7 @@
       }
     }
 
-    /* 메인 프로젝트 슬라이더 제어 */
+    /* 메인 프로젝트 슬라이더 제어 (GPU 가속 적용) */
     const carouselStates = {};
 
     function moveSlide(carouselId, direction) {
@@ -1323,7 +1330,7 @@
       }
 
       carouselStates[carouselId] = currentIndex;
-      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+      track.style.transform = `translate3d(-${currentIndex * 100}%, 0, 0)`;
 
       dots.forEach((dot, index) => {
         dot.classList.toggle('active', index === currentIndex);
@@ -1338,7 +1345,7 @@
       const dots = container.querySelectorAll('.dot');
 
       carouselStates[carouselId] = index;
-      track.style.transform = `translateX(-${index * 100}%)`;
+      track.style.transform = `translate3d(-${index * 100}%, 0, 0)`;
 
       dots.forEach((d, i) => {
         d.classList.toggle('active', i === index);
